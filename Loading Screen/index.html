@@ -1,0 +1,96 @@
+<html>
+	<head>
+		<title>Trump's Hair Loading Screen</title>
+		<style>
+			html, body {
+				width: 100%;
+				margin: 0;
+				padding: 0;
+				outline: 0;
+				border: 0;
+				background-image: url("assets/bg.jpg");
+				background-size: cover;
+				background-position: center center;
+				text-align: center;
+				color: white;
+			}
+			#main {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				width: 924px;
+				height: 425px;
+				margin-top: -412.5px; /* Half the height */
+				margin-left: -462px; /* Half the width */
+			}
+			#status-container {
+				position: relative;
+				height: 50px;
+				width: 100%;
+				top: 30%;
+				text-align: center;
+				margin-top: -65px;
+				font-size: 2em;
+				line-height: 18px;
+				color: rgb(252, 142, 26)
+			}
+			#loading {
+				display: inline-block;
+				width: 100%;
+				height: 6px;
+				background-color: rgba(252, 142, 26, .5)
+			}
+			#loading-progress {
+				height: 100%;
+				width: 0%;
+				background-color: rgb(255, 255, 255)
+			}
+		</style>
+	</head>
+	<body>
+		<div id="main">
+			<img src="assets/logo-fixed.png" width="924px" height="425px" /><br/><br/>
+			<div id="status-container">
+				<div id="status">Retrieving server info...</div>
+				<br/><br/>
+				<div id="loading">
+					<div id="loading-progress"></div>
+				</div>
+			</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script>
+			var neededFiles;
+			var downloadedFiles = 0;
+			function setProgress(a) {
+				$("#loading-progress").css("width", a + "%")
+			}
+			function DownloadingFile(a) {
+				downloadedFiles++;
+				refreshProgress();
+				setStatus("Downloading files...")
+			}
+			function setStatus(a) {
+				$("#status").html(a)
+			}
+			function SetStatusChanged(a) {
+				if (a.indexOf("Getting Addon #") != -1) {
+					downloadedFiles++;
+					refreshProgress()
+				} else {
+					if (a == "Sending client info...") {
+						setProgress(100)
+					}
+				}
+				setStatus(a)
+			}
+			function SetFilesNeeded(a) {
+				neededFiles = a + 1
+			}
+			function refreshProgress() {
+				progress = Math.floor(((downloadedFiles / neededFiles) * 100));
+				setProgress(progress)
+			};
+		</script>
+	</body>
+</html>
